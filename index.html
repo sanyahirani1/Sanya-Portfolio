@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanya Hirani — Creative & Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #fafbfc;
+    --off: #f2f4f7;
+    --blue-pale: #e8eef7;
+    --blue-soft: #c2d3ec;
+    --blue-mid: #7fa3cc;
+    --blue-deep: #3a6a9e;
+    --blue-dark: #1e3f66;
+    --grey-light: #e4e7ed;
+    --grey-mid: #9aa3b0;
+    --grey-dark: #4a5568;
+    --ink: #1a2333;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; top: 0; left: 0;
+    width: 8px; height: 8px;
+    background: var(--blue-deep);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1px solid var(--blue-mid);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
+    transform: translate(-50%, -50%);
+    opacity: 0.6;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(250,251,252,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .nav-links a:hover { color: var(--blue-deep); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; top: 0; right: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(135deg, var(--blue-pale) 0%, var(--off) 60%);
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+  .hero-dots {
+    position: absolute; bottom: 8%; right: 8%;
+    width: 180px; height: 180px;
+    background-image: radial-gradient(var(--blue-soft) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+
+  .hero-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--blue-deep);
+  }
+  .hero-sub {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--grey-dark);
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-tagline {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--grey-dark);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+    border-left: 2px solid var(--blue-mid);
+    padding-left: 1.2rem;
+  }
+  .hero-tagline strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    background: var(--blue-dark);
+    color: white;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    cursor: none;
+  }
+  .btn-primary:hover { background: var(--blue-deep); transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--grey-mid);
+    color: var(--grey-dark);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    cursor: none;
+  }
+  .btn-ghost:hover { border-color: var(--blue-deep); color: var(--blue-deep); transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 4rem;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--grey-mid);
+    display: flex; align-items: center; gap: 0.8rem;
+    opacity: 0; animation: fadeUp 1s 1.2s forwards;
+  }
+  .hero-scroll::before {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--grey-mid);
+  }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--blue-deep); }
+  .section-intro {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--grey-dark);
+    line-height: 1.8;
+    max-width: 560px;
+    margin-bottom: 4rem;
+  }
+
+  /* ABOUT */
+  #about { background: var(--off); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--grey-dark);
+    margin-bottom: 1.2rem;
+  }
+  .about-text p strong { color: var(--ink); font-weight: 500; }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    padding: 1.5rem;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--blue-deep);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-desc {
+    font-size: 0.78rem;
+    color: var(--grey-mid);
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+  .skills-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+  .skill-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--blue-soft);
+    color: var(--blue-dark);
+    background: var(--blue-pale);
+  }
+
+  /* WORK */
+  #work { background: var(--white); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+  .project-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--off);
+    aspect-ratio: 4/3;
+    cursor: none;
+  }
+  .project-card:first-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16/7;
+  }
+  .project-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .project-card:hover .project-bg { transform: scale(1.04); }
+
+  .proj-arts { background: linear-gradient(135deg, #dce8f5 0%, #b8cfe8 50%, #8fb3d9 100%); }
+  .proj-diss  { background: linear-gradient(135deg, #e8eff7 0%, #c5d6ea 40%, #a0bdd8 100%); }
+  .proj-events{ background: linear-gradient(135deg, #edf2f8 0%, #d0dff0 50%, #aac4de 100%); }
+  .proj-brand { background: linear-gradient(135deg, #e2ecf6 0%, #bdd0e8 50%, #92b5d6 100%); }
+
+  .proj-pattern {
+    position: absolute; inset: 0;
+    opacity: 0.18;
+  }
+  .proj-pattern-grid {
+    background-image:
+      linear-gradient(var(--blue-mid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blue-mid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .proj-pattern-dots {
+    background-image: radial-gradient(var(--blue-deep) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .proj-pattern-diag {
+    background-image: repeating-linear-gradient(45deg, var(--blue-mid) 0, var(--blue-mid) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+
+  /* floating shape inside project card */
+  .proj-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .project-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(26,35,51,0.75) 0%, transparent 100%);
+    transform: translateY(30%);
+    transition: transform 0.4s ease;
+    color: white;
+  }
+  .project-card:hover .project-info { transform: translateY(0); }
+  .proj-category {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue-soft);
+    margin-bottom: 0.4rem;
+    opacity: 0; transition: opacity 0.3s 0.1s;
+  }
+  .project-card:hover .proj-category { opacity: 1; }
+  .proj-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .proj-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+    max-width: 520px;
+    opacity: 0; transition: opacity 0.3s 0.15s;
+    max-height: 0; overflow: hidden;
+    transition: opacity 0.3s 0.15s, max-height 0.4s ease;
+  }
+  .project-card:hover .proj-desc { opacity: 1; max-height: 120px; }
+
+  /* DISSERTATION FEATURE */
+  #dissertation {
+    background: var(--blue-dark);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .diss-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .diss-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    position: relative; z-index: 1;
+  }
+  #dissertation .section-label { color: var(--blue-soft); }
+  #dissertation .section-title { color: white; }
+  #dissertation .section-title em { color: var(--blue-soft); }
+  .diss-body {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 1.5rem;
+  }
+  .diss-body strong { color: white; font-weight: 400; }
+  .diss-quote {
+    border-left: 2px solid var(--blue-mid);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+  }
+  .diss-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+  .diss-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+  }
+  .diss-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .diss-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    backdrop-filter: blur(4px);
+  }
+  .diss-card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue-soft);
+    margin-bottom: 0.6rem;
+  }
+  .diss-card-text {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+  .diss-progress {
+    margin-top: 0.8rem;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .diss-progress-fill {
+    height: 100%;
+    background: var(--blue-soft);
+    border-radius: 2px;
+    animation: progress 2s 1s ease-out both;
+  }
+  @keyframes progress { from { width: 0; } }
+
+  /* EXPERIENCE */
+  #experience { background: var(--off); }
+  .exp-list { max-width: 800px; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-date {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--grey-mid);
+    letter-spacing: 0.05em;
+    padding-top: 0.2rem;
+  }
+  .exp-role {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .exp-org {
+    font-size: 0.8rem;
+    color: var(--blue-deep);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
+  }
+  .exp-detail {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--grey-dark);
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--white);
+    text-align: center;
+  }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-email {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 300;
+    color: var(--blue-deep);
+    text-decoration: none;
+    display: block;
+    margin: 2rem 0;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .contact-email:hover { color: var(--blue-dark); }
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .social-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    cursor: none;
+  }
+  .social-link:hover { color: var(--blue-deep); border-color: var(--blue-deep); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem 4rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .about-grid, .diss-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card:first-child { aspect-ratio: 4/3; }
+    .project-info { transform: translateY(0); }
+    .proj-category, .proj-desc { opacity: 1; max-height: none; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Sanya Hirani</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#dissertation">Project</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content">
+    <p class="hero-label">Creative &amp; Digital</p>
+    <h1 class="hero-name">Sanya<br><em>Hirani</em></h1>
+    <p class="hero-sub">Digital Media &amp; Creative Industries</p>
+    <p class="hero-tagline">
+      <strong>Stories don't wait to be told — they wait to be found.</strong><br>
+      I find them in communities, campaigns and quiet human moments, then shape them into content that actually connects.
+    </p>
+    <div class="hero-cta">
+      <a href="#work" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+  <p class="hero-scroll">Scroll to explore</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal">Who I Am</p>
+  <h2 class="section-title reveal">Creative thinker.<br><em>Human-first storyteller.</em></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a digital marketing and creative media professional currently completing an <strong>MA in Digital Media & Creative Industries</strong> at the University of Birmingham — with a BA in Business Administration (Marketing) from India.</p>
+      <p>I believe the best content isn't the loudest — it's the most <strong>honest</strong>. My work is rooted in listening: to communities, to audiences, and to the stories that don't always get told.</p>
+      <p>From managing social media campaigns for a Birmingham arts charity to producing a documentary exploring how people share their life stories, I bring a <strong>strategic eye and a creative heart</strong> to everything I make.</p>
+      <div class="skills-list">
+        <span class="skill-tag">Social Media Strategy</span>
+        <span class="skill-tag">Content Creation</span>
+        <span class="skill-tag">Graphic Design</span>
+        <span class="skill-tag">Video Editing</span>
+        <span class="skill-tag">Email Marketing</span>
+        <span class="skill-tag">Copywriting</span>
+        <span class="skill-tag">Event Coordination</span>
+        <span class="skill-tag">Brand Storytelling</span>
+        <span class="skill-tag">Canva</span>
+        <span class="skill-tag">Mailchimp</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">5+</div>
+          <div class="stat-desc">Social media accounts managed simultaneously</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100+</div>
+          <div class="stat-desc">Prospective students engaged at open days</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2</div>
+          <div class="stat-desc">Countries — India &amp; UK — of professional experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3%</div>
+          <div class="stat-desc">Social engagement growth at Arts Uplift UK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <p class="section-label reveal">Selected Work</p>
+  <h2 class="section-title reveal">Campaigns, content<br><em>&amp; creative projects.</em></h2>
+  <p class="section-intro reveal">A selection of work spanning social media, brand campaigns, newsletters, events and graphic design — created across the UK and India.</p>
+
+  <div class="projects-grid reveal">
+
+    <!-- Card 1 — Hero -->
+    <div class="project-card">
+      <div class="project-bg proj-arts">
+        <div class="proj-pattern proj-pattern-grid"></div>
+        <div class="proj-shape" style="width:220px;height:220px;top:-40px;right:8%;"></div>
+        <div class="proj-shape" style="width:120px;height:120px;bottom:15%;left:5%;"></div>
+      </div>
+      <div class="project-info">
+        <p class="proj-category">Social Media · Email Marketing · Events</p>
+        <h3 class="proj-title">Arts Uplift UK — Digital Campaigns</h3>
+        <p class="proj-desc">End-to-end digital marketing for a Birmingham arts charity — social media content across Instagram, TikTok &amp; Facebook, a "Singing for Wellbeing" campaign, monthly newsletters, event coverage, and creative writing campaign reaching the community.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="project-card">
+      <div class="project-bg proj-events">
+        <div class="proj-pattern proj-pattern-dots"></div>
+        <div class="proj-shape" style="width:160px;height:160px;top:10%;right:10%;"></div>
+      </div>
+      <div class="project-info">
+        <p class="proj-category">Events · Community</p>
+        <h3 class="proj-title">Community Events &amp; Quizzes</h3>
+        <p class="proj-desc">Planned and delivered multiple community events and quiz nights at Arts Uplift, managing logistics, promotional materials, and on-the-day coordination.</p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="project-card">
+      <div class="project-bg proj-brand">
+        <div class="proj-pattern proj-pattern-diag"></div>
+        <div class="proj-shape" style="width:140px;height:140px;bottom:5%;right:15%;"></div>
+      </div>
+      <div class="project-info">
+        <p class="proj-category">Graphic Design · Branding</p>
+        <h3 class="proj-title">Social Media Visual Design</h3>
+        <p class="proj-desc">Designed branded social media posts, event graphics, and campaign visuals using Canva for Arts Uplift and multiple clients in India — maintaining consistent visual identity across platforms.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DISSERTATION -->
+<section id="dissertation">
+  <div class="diss-bg-circle" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+  <div class="diss-bg-circle" style="width:300px;height:300px;bottom:0;left:-80px;"></div>
+  <div class="diss-grid">
+    <div>
+      <p class="section-label reveal">Featured Project</p>
+      <h2 class="section-title reveal">Everyone has a story.<br><em>Not everyone tells it the same way.</em></h2>
+      <p class="diss-body reveal">My MA dissertation is a creative documentary project born out of my work at Arts Uplift — a Birmingham charity that brings elderly people together through art and creativity.</p>
+      <blockquote class="diss-quote reveal">"For some period you are alone — but not always. You eventually end up finding your people."</blockquote>
+      <p class="diss-body reveal">The project explores how <strong>loneliness transforms into connection</strong> when people are given a space to express themselves. Some share their stories through words. Others through painting, movement, or music. The film captures both — honouring the fact that being introverted doesn't mean being silent.</p>
+      <div class="diss-tags reveal">
+        <span class="diss-tag">Documentary Film</span>
+        <span class="diss-tag">Community Storytelling</span>
+        <span class="diss-tag">Elderly Wellbeing</span>
+        <span class="diss-tag">Arts Uplift UK</span>
+        <span class="diss-tag">MA Dissertation</span>
+        <span class="diss-tag">In Progress 2026</span>
+      </div>
+    </div>
+    <div class="diss-visual reveal">
+      <div class="diss-card">
+        <p class="diss-card-label">Project Theme</p>
+        <p class="diss-card-text">Loneliness, human connection, and the many languages of self-expression — verbal, visual, and creative.</p>
+      </div>
+      <div class="diss-card">
+        <p class="diss-card-label">Methodology</p>
+        <p class="diss-card-text">Documentary filmmaking, community interviews, and observational storytelling within Arts Uplift sessions.</p>
+      </div>
+      <div class="diss-card">
+        <p class="diss-card-label">Key Insight</p>
+        <p class="diss-card-text">Introverts and extroverts both have rich inner worlds — they simply need different doors to share them through.</p>
+      </div>
+      <div class="diss-card">
+        <p class="diss-card-label">Progress</p>
+        <p class="diss-card-text">Research &amp; filming underway — expected completion 2026</p>
+        <div class="diss-progress">
+          <div class="diss-progress-fill" style="width: 55%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label reveal">Experience</p>
+  <h2 class="section-title reveal">Where I've <em>worked &amp; grown.</em></h2>
+  <div class="exp-list">
+    <div class="exp-item reveal">
+      <div class="exp-date">Jan 2026 — Present</div>
+      <div>
+        <p class="exp-role">Digital Marketing & Communications Intern</p>
+        <p class="exp-org">Arts Uplift UK · Birmingham</p>
+        <p class="exp-detail">Social media management, content creation, event coordination, newsletter production, and the "Singing for Wellbeing" campaign. Increased engagement by 3% and improved content delivery efficiency by 10%.</p>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Nov 2025 — Present</div>
+      <div>
+        <p class="exp-role">Postgraduate Student Ambassador</p>
+        <p class="exp-org">University of Birmingham · UK</p>
+        <p class="exp-detail">Representing the MA Digital Media programme at open days attended by 100+ prospective students. Co-delivers presentations with the Programme Lead and supports prospective student communications.</p>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">Mar 2026 — Present</div>
+      <div>
+        <p class="exp-role">Student Ambassador</p>
+        <p class="exp-org">Unibuddy · University of Birmingham</p>
+        <p class="exp-detail">Guiding 50+ prospective students through their application journey via digital platforms, providing authentic peer insight into postgraduate study.</p>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">2023 — 2024</div>
+      <div>
+        <p class="exp-role">Social Media Executive & Freelancer</p>
+        <p class="exp-org">Digital Marketing Agency · India</p>
+        <p class="exp-detail">Managed 5+ client social media accounts simultaneously. Created branded visual content, wrote copy for diverse audiences, and delivered end-to-end freelance digital marketing projects independently.</p>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-date">2022 — 2024</div>
+      <div>
+        <p class="exp-role">Internal Head — Literature &amp; Events Club</p>
+        <p class="exp-org">Prestige Institute of Management &amp; Research · India</p>
+        <p class="exp-detail">Led a student society, planned and delivered multiple large-scale campus events, and developed skills in team leadership, event management, and community engagement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <p class="section-label reveal">Get In Touch</p>
+    <h2 class="section-title reveal">Let's make something<br><em>worth remembering.</em></h2>
+    <p class="section-intro reveal" style="margin: 0 auto 1rem;">Open to full-time roles in digital marketing, content, brand communications, and events — anywhere in the UK.</p>
+    <a href="mailto:sanyahirani1@gmail.com" class="contact-email reveal">sanyahirani1@gmail.com</a>
+    <p style="font-size:0.82rem;color:var(--grey-mid);margin-bottom:1.5rem;" class="reveal">+44 7553684284</p>
+    <div class="social-links reveal">
+      <a href="https://www.linkedin.com/in/sanya-hirani-508a25246" target="_blank" class="social-link">LinkedIn</a>
+      <a href="https://www.instagram.com/sanyahirani05" target="_blank" class="social-link">Instagram</a>
+    </div>
+    <div style="margin-top:3rem;" class="reveal">
+      <a href="#" class="btn-primary" onclick="window.print()">Download CV</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Sanya Hirani · Creative &amp; Digital · Birmingham, UK</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '52px'; ring.style.height = '52px';
+      ring.style.borderColor = 'var(--blue-deep)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px'; ring.style.height = '32px';
+      ring.style.borderColor = 'var(--blue-mid)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
